@@ -201,6 +201,8 @@ _TD.a.push(function (TD) {
 				function (obj) {
 					return Math.pow(obj.cx - cx, 2) + Math.pow(obj.cy - cy, 2) <= range2;
 				});
+			//console.log(this.map.monsters.length);
+            //console.log(this);
 		},
 
 		/**
@@ -219,13 +221,40 @@ _TD.a.push(function (TD) {
 		 * 向自己的目标开火
 		 */
 		fire: function () {
+            var cx = this.cx, cy = this.cy,
+                range2 = Math.pow(this.range_px, 2);
+
 			if (!this.target || !this.target.is_valid) return;
 
 			if (this.type == "laser_gun") {
 				// 如果是激光枪，目标立刻被击中
 				this.target.beHit(this, this.damage);
 				return;
-			}
+            } else if (this.type == "aoe_tower") {
+                // 画出圆圈向外扩散的效果，暂时借用子弹爆炸效果
+                TD.Explode(this.id + "-explode", {
+                    cx: this.cx,
+                    cy: this.cy,
+                    r: this.range,
+                    step_level: this.step_level,
+                    render_level: this.render_level,
+                    color: "#ff0",
+                    scene: this.map.scene,
+                    time: 5
+                });
+
+                // aoe塔，将会同时对多个目标起作用
+                var targets = TD.lang.all(
+                    this.map.monsters,
+                    function (obj) {
+                        return Math.pow(obj.cx - cx, 2) + Math.pow(obj.cy - cy, 2) <= range2;
+                    });
+                for (var i = 0; i < targets.length; i++) {
+                    targets[i].beHit(this, this.damage);
+                }
+                return;
+            }
+
 
 			var muzzle = this.muzzle || [this.cx, this.cy], // 炮口的位置
 				cx = muzzle[0],

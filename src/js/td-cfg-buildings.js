@@ -90,7 +90,18 @@ _TD.a.push(function (TD) {
 				life: 100,
 				shield: 100,
 				cost: 2000
-			}
+			},
+
+			// 自己定义的AOE塔
+			"aoe_tower": {
+                damage: 5,
+                range: 4,
+                max_range: 8,
+                speed: 20,
+                life: 100,
+                shield: 100,
+                cost: 1
+            }
 		};
 
 		return building_attributes[building_type] || {};

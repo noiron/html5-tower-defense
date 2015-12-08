@@ -109,6 +109,23 @@ _TD.a.push(function (TD) {
 			return null;
 		},
 
+        /**
+         * 对一个数组的每一项依次执行指定方法
+         * 返回所有令 f 值为 true 的元素，如没有元素令 f 值为 true，则
+         * 返回 null
+         * @param list {Array}
+         * @param f {Function}
+         * @return {Array}
+         */
+        all: function (list, f) {
+            var results = [];
+            for (var i = 0, l = list.length; i < l; i++) {
+                if (f(list[i]))
+                    results.push(list[i]);
+            }
+            return results;
+        },
+
 		/**
 		 * 依次弹出列表中的元素，并对其进行操作
 		 * 注意，执行完毕之后原数组将被清空

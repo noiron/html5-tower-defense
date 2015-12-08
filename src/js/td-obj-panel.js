@@ -156,6 +156,7 @@ _TD.a.push(function (TD) {
 				this.x, this.y + 60 * _TD.retina);
 			ctx.fillText(TD._t("panel_monster_title") + this.map.monsters.length,
 				this.x, this.y + 80 * _TD.retina);
+			// 小地图的位置在这里
 			ctx.fillText(TD._t("wave_info", [this.scene.wave]), this.x, this.y + 210 * _TD.retina);
 			ctx.closePath();
 
