@@ -225,11 +225,11 @@ _TD.a.push(function (TD) {
 			ctx.stroke();
 		},
 		"aoe_tower": function (b, ctx, map, gs, gs2) {
-            ctx.fillStyle = "#f22";
+            ctx.fillStyle = "#ff4d4d";
             ctx.strokeStyle = "#000";
             ctx.beginPath();
             ctx.lineWidth = _TD.retina;
-            ctx.arc(b.cx, b.cy, gs2 - 2, 0, Math.PI * 2, true);
+            ctx.arc(b.cx, b.cy, gs2 - 4, 0, Math.PI * 2, true);
             ctx.closePath();
             ctx.fill();
             ctx.stroke();

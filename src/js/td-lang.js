@@ -177,7 +177,7 @@ _TD.a.push(function (TD) {
 
 			var r = rgb_str.substr(1, 2),
 				g = rgb_str.substr(3, 2),
-				b = rgb_str.substr(3, 2);
+				b = rgb_str.substr(5, 2);
 
 			return [parseInt(r, 16), parseInt(g, 16), parseInt(b, 16)];
 		},

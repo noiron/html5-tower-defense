@@ -95,9 +95,9 @@ _TD.a.push(function (TD) {
 			// 自己定义的AOE塔
 			"aoe_tower": {
                 damage: 5,
-                range: 4,
+                range: 2,
                 max_range: 8,
-                speed: 20,
+                speed: 1,
                 life: 100,
                 shield: 100,
                 cost: 1

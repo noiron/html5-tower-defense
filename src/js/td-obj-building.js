@@ -231,17 +231,25 @@ _TD.a.push(function (TD) {
 				this.target.beHit(this, this.damage);
 				return;
             } else if (this.type == "aoe_tower") {
-                // 画出圆圈向外扩散的效果，暂时借用子弹爆炸效果
-                TD.Explode(this.id + "-explode", {
+                // 画出圆圈向外扩散的效果，参考子弹爆炸效果
+                TD.Diffusion(this.id + "-diffusion", {
                     cx: this.cx,
                     cy: this.cy,
-                    r: this.range,
-                    step_level: this.step_level,
-                    render_level: this.render_level,
-                    color: "#ff0",
+                    r: this.range_px,
+                    step_level: 0,//this.step_level,
+                    render_level: 1,
+                    color: "#ffff00",
                     scene: this.map.scene,
-                    time: 5
+                    time: 0.8
                 });
+                var ctx = TD.ctx;
+                //ctx.globalAlpha = 0.8;
+                ctx.fillStyle = "#000";
+                ctx.beginPath();
+                ctx.arc(this.cx, this.cy, this.range, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.fill();
+
 
                 // aoe塔，将会同时对多个目标起作用
                 var targets = TD.lang.all(
@@ -585,6 +593,79 @@ _TD.a.push(function (TD) {
 
 		return bullet;
 	};
+
+    /**
+     * AOE塔发射时向外扩散的效果对象
+     */
+    var diffusion_obj = {
+        _init: function (cfg) {
+            cfg = cfg || {};
+
+            var rgb = TD.lang.rgb2Arr(cfg.color);
+            this.cx = cfg.cx;
+            this.cy = cfg.cy;
+            this.r = cfg.r * _TD.retina;
+            this.step_level = cfg.step_level;
+            this.render_level = cfg.render_level;
+
+            this.rgb_r = rgb[0];
+            this.rgb_g = rgb[1];
+            this.rgb_b = rgb[2];
+            this.rgb_a = 0.2;
+
+            this.wait = this.wait0 = TD.exp_fps * (cfg.time || 1);
+
+            cfg.scene.addElement(this);
+        },
+        step: function () {
+            if (!this.is_valid) return;
+
+            this.wait--;
+            //this.r += 10 ;
+           // console.log(this.r);
+
+            this.is_valid = this.wait > 0;
+            this.rgb_a = this.wait / this.wait0;
+        },
+        render: function () {
+            var ctx = TD.ctx;
+
+            ctx.fillStyle = "rgba(" + this.rgb_r + "," + this.rgb_g + ","
+                + this.rgb_b + "," + this.rgb_a + ")";
+            ctx.beginPath();
+            ctx.arc(this.cx, this.cy, this.r, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+        }
+    };
+
+    /**
+     * @param id {String}
+     * @param cfg {Object} 配置对象
+     *         {
+	 *			// 至少需要包含以下项：
+	 * 			 cx: 中心 x 坐标
+	 * 			 cy: 中心 y 坐标
+	 * 			 r: 半径
+	 * 			 color: RGB色彩，形如“#f98723”
+	 * 			 scene: Scene 对象
+	 * 			 step_level:
+	 * 			 render_level:
+	 *
+	 * 			// 以下项可选：
+	 * 			time: 持续时间，默认为 1，单位大致为秒（根据渲染情况而定，不是很精确）
+	 *		 }
+     */
+    TD.Diffusion = function (id, cfg) {
+//		cfg.on_events = ["enter", "out"];
+        var diffusion = new TD.Element(id, cfg);
+        TD.lang.mix(diffusion, diffusion_obj);
+        diffusion._init(cfg);
+
+        return diffusion;
+    };
+
+
 
 }); // _TD.a.push end
 
