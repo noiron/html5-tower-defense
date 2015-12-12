@@ -233,6 +233,16 @@ _TD.a.push(function (TD) {
             ctx.closePath();
             ctx.fill();
             ctx.stroke();
+        },
+        "slow_tower": function (b, ctx, map, gs, gs2) {
+            ctx.fillStyle = "#aaa";
+            ctx.strokeStyle = "#000";
+            ctx.beginPath();
+            ctx.lineWidth = _TD.retina;
+            ctx.arc(b.cx, b.cy, gs2 - 4, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
         }
 	};
 

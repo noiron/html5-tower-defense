@@ -170,6 +170,10 @@ _TD.a.push(function (TD) {
                             {
                                 pos: [1, 1],
                                 building: "aoe_tower"
+                            },
+                            {
+                                pos: [2, 1],
+                                building: "slow_tower"
                             }
 						]
 					}

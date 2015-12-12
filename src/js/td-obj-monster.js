@@ -26,6 +26,7 @@ _TD.a.push(function (TD) {
 			);
 			if (this.speed < 1) this.speed = 1;
 			if (this.speed > cfg.max_speed) this.speed = cfg.max_speed;
+            this.initSpeed = this.speed;
 
 			this.life = this.life0 = Math.floor(
 				attr.life * (this.difficulty + 1) * (Math.random() + 0.5) * 0.5
@@ -58,6 +59,8 @@ _TD.a.push(function (TD) {
 			this.toward = 2; // 默认面朝下方
 			this._dx = 0;
 			this._dy = 0;
+
+            this.slowTime = 0;
 
 			this.is_blocked = false; // 前进的道路是否被阻塞了
 		},
@@ -249,6 +252,13 @@ _TD.a.push(function (TD) {
 					return;
 				}
 			}
+
+            if (this.slowTime > 0) {
+                this.slowTime -= 1;
+            } else {
+                this.slowTime = 0;
+                this.speed = this.initSpeed;
+            }
 
 			if (this.cx == this.next_grid.cx && this.cy == this.next_grid.cy) {
 				this.arrive();

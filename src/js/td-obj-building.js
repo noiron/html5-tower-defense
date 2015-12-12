@@ -261,6 +261,39 @@ _TD.a.push(function (TD) {
                     targets[i].beHit(this, this.damage);
                 }
                 return;
+            }   else if (this.type == "slow_tower") {
+                // 减速塔的效果
+                TD.Diffusion(this.id + "-diffusion", {
+                    cx: this.cx,
+                    cy: this.cy,
+                    r: this.range_px,
+                    step_level: 0,//this.step_level,
+                    render_level: 1,
+                    color: "#ddd",
+                    scene: this.map.scene,
+                    time: 0.4
+                });
+                var ctx = TD.ctx;
+                ctx.fillStyle = "#000";
+                ctx.beginPath();
+                ctx.arc(this.cx, this.cy, this.range, 0, Math.PI * 2, true);
+                ctx.closePath();
+                ctx.fill();
+
+                // 减速，将会同时对多个目标起作用
+                targets = TD.lang.all(
+                    this.map.monsters,
+                    function (obj) {
+                        return Math.pow(obj.cx - cx, 2) + Math.pow(obj.cy - cy, 2) <= range2;
+                    });
+                for (i = 0; i < targets.length; i++) {
+                    if (targets[i].slowTime > 0) {
+                        targets[i].speed = targets[i].initSpeed - this.decelerate;
+                    } else {
+                        targets[i].slowTime = this.duration;
+                    }
+                }
+                return;
             }
 
 

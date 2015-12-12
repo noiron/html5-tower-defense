@@ -101,7 +101,21 @@ _TD.a.push(function (TD) {
                 life: 100,
                 shield: 100,
                 cost: 1
+            },
+
+            "slow_tower": {
+                damage: 0,
+                decelerate: 4,
+                duration: 100,
+                range: 6,
+                max_range: 10,
+                speed: 1,
+                life: 100,
+                shield: 100,
+                cost: 1
             }
+
+
 		};
 
 		return building_attributes[building_type] || {};
